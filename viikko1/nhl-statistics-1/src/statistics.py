@@ -1,6 +1,12 @@
 def sort_by_points(player):
     return player.points
 
+def sort_by_goals(player):
+    return player.goals
+
+def sort_by_assists(player):
+    return player.assists
+
 
 class Statistics:
     def __init__(self, reader):
@@ -21,12 +27,33 @@ class Statistics:
 
         return list(players_of_team)
 
-    def top(self, how_many):
-        sorted_players = sorted(
-            self._players,
-            reverse=True,
-            key=sort_by_points
-        )
+    def top(self, how_many, sortby = None):
+        if sortby:
+            if sortby.value == 1:
+                sorted_players = sorted(
+                    self._players,
+                    reverse=True,
+                    key=sort_by_points
+                )
+            elif sortby.value == 2:
+                sorted_players = sorted(
+                    self._players,
+                    reverse=True,
+                    key=sort_by_goals
+                )
+            else:
+                sorted_players = sorted(
+                    self._players,
+                    reverse=True,
+                    key=sort_by_assists
+                )
+        else:
+            sorted_players = sorted(
+                    self._players,
+                    reverse=True,
+                    key=sort_by_points
+                )
+
 
         result = []
         i = 0

@@ -1,6 +1,12 @@
 import unittest
 from statistics import Statistics
 from player import Player
+from enum import Enum
+
+class SortBy(Enum):
+    POINTS = 1
+    GOALS = 2
+    ASSISTS = 3
 
 class PlayerReaderStub:
     def get_players(self):
@@ -33,4 +39,16 @@ class TestStatistics(unittest.TestCase):
 
     def test_search_top_player(self):
         player_list = self.statistics.top(1)
+        self.assertEqual(player_list[0].name, 'Gretzky')
+
+    def test_search_top_goals(self):
+        player_list = self.statistics.top(1, SortBy.GOALS)
+        self.assertEqual(player_list[0].name, 'Lemieux')
+
+    def test_search_top_assists(self):
+        player_list = self.statistics.top(1, SortBy.ASSISTS)
+        self.assertEqual(player_list[0].name, 'Gretzky')
+
+    def test_search_top_points(self):
+        player_list = self.statistics.top(1, SortBy.POINTS)
         self.assertEqual(player_list[0].name, 'Gretzky')
