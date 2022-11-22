@@ -30,7 +30,7 @@ class Ostoskori:
             self.ostoskori.pop(poistettava.nimi())
 
     def tyhjenna(self):
-        pass
+        self.ostoskori = {}
         # tyhjentää ostoskorin
 
     def ostokset(self):
