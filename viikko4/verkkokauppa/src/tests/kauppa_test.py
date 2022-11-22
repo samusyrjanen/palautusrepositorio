@@ -8,10 +8,10 @@ from tuote import Tuote
 class TestKauppa(unittest.TestCase):
     def setUp(self):
         self.pankki_mock = Mock()
-        viitegeneraattori_mock = Mock()
+        viitegeneraattori_mock = Mock(wraps=Viitegeneraattori())
 
         # palautetaan aina arvo 42
-        viitegeneraattori_mock.uusi.return_value = 42
+        #viitegeneraattori_mock.uusi.return_value = 42
 
         varasto_mock = Mock()
 
@@ -95,4 +95,66 @@ class TestKauppa(unittest.TestCase):
 
         # varmistetaan, että metodia tilisiirto on kutsuttu
         self.pankki_mock.tilisiirto.assert_called_with('pekka', ANY, '12345', ANY, 5)
+        # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
+
+    def test_metodi_aloita_asiointi_nollaa_edellisen_ostoksen_tiedot(self):
+
+
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(3)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with('pekka', ANY, '12345', ANY, 5)
+        # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
+
+
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekk", "1234")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with('pekk', ANY, '1234', ANY, 13)
+        # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
+
+    def test_uusi_viitenumero_jokaiselle_maksutapahtumalle(self):
+
+
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(3)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with(ANY, 2, ANY, ANY, ANY)
+        # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
+
+
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekk", "1234")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with(ANY, 3, ANY, ANY, ANY)
+        # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
+
+    def test_ostoskorista_voi_poistaa_tuotteita(self):
+
+
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.poista_korista(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with('pekka', ANY, '12345', ANY, 8)
         # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
