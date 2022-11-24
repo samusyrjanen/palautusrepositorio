@@ -13,3 +13,35 @@ class Sovelluslogiikka:
 
     def aseta_arvo(self, arvo):
         self.tulos = arvo
+
+class Summa:
+    def __init__(self, sovellus, syote):
+        self.sovellus = sovellus
+        self.syote = syote
+
+    def suorita(self):
+        self.sovellus.plus(int(self.syote()))
+
+class Erotus:
+    def __init__(self, sovellus, syote):
+        self.sovellus = sovellus
+        self.syote = syote
+
+    def suorita(self):
+        self.sovellus.miinus(int(self.syote()))
+
+class Nollaus:
+    def __init__(self, sovellus, syote):
+        self.sovellus = sovellus
+        self.syote = syote
+
+    def suorita(self):
+        self.sovellus.nollaa()
+
+class Kumoa:
+    def __init__(self, sovellus, syote):
+        self.sovellus = sovellus
+        self.syote = syote
+
+    def suorita(self):
+        pass
