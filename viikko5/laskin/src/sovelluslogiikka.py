@@ -3,15 +3,19 @@ class Sovelluslogiikka:
         self.tulos = tulos
 
     def miinus(self, arvo):
+        self.edellinen = self.tulos
         self.tulos = self.tulos - arvo
 
     def plus(self, arvo):
+        self.edellinen = self.tulos
         self.tulos = self.tulos + arvo
 
     def nollaa(self):
+        self.edellinen = self.tulos
         self.tulos = 0
 
     def aseta_arvo(self, arvo):
+        self.edellinen = self.tulos
         self.tulos = arvo
 
 class Summa:
@@ -44,4 +48,4 @@ class Kumoa:
         self.syote = syote
 
     def suorita(self):
-        pass
+        self.sovellus.aseta_arvo(self.sovellus.edellinen)
